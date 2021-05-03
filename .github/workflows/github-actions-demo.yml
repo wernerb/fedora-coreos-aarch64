@@ -30,7 +30,7 @@ jobs:
     steps:
     - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
-    - uses: docker://multiarch/jcajka/coreos-assembler:432arm64
+    - uses: docker://jcajka/coreos-assembler:432arm64
       with:
         args: 'uname -a'
 
