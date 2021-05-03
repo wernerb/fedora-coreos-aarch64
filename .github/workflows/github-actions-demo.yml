@@ -31,6 +31,7 @@ jobs:
     - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
     - uses: docker://multiarch/jcajka/coreos-assembler:432arm64
+      with:
         args: 'uname -a'
 
     # - uses: actions/checkout@v1
