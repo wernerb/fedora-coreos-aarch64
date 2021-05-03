@@ -4,25 +4,37 @@ jobs:
   aarch64_job:
     # The host should always be Linux
     runs-on: ubuntu-18.04
-    name: Build on fedora_latest aarch64
+    # name: Build on fedora_latest aarch64
+    # steps:
+    #   - uses: actions/checkout@v2.1.0
+    #   - uses: uraimo/run-on-arch-action@v2.0.5
+    #     name: Run commands
+    #     id: runcmd
+    #     with:
+    #       arch: aarch64
+    #       distro: fedora_latest
+
+    #       # Not required, but speeds up builds by storing container images in
+    #       # a GitHub package registry.
+    #       githubToken: ${{ github.token }}
+
+    #       # Set an output parameter `uname` for use in subsequent steps
+    #       run: |
+    #         podman pull jcajka/coreos-assembler:latest
+
+    #   - name: Get the output
+    #     # Echo the `uname` output parameter from the `runcmd` step
+    #     run: |
+    #       echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
-      - uses: uraimo/run-on-arch-action@v2.0.5
-        name: Run commands
-        id: runcmd
-        with:
-          arch: aarch64
-          distro: fedora_latest
+    - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
-          # Not required, but speeds up builds by storing container images in
-          # a GitHub package registry.
-          githubToken: ${{ github.token }}
+    - uses: docker://multiarch/jcajka/coreos-assembler:432arm64
+        args: 'uname -a'
 
-          # Set an output parameter `uname` for use in subsequent steps
-          run: |
-            podman pull jcajka/coreos-assembler:latest
+    # - uses: actions/checkout@v1
 
-      - name: Get the output
-        # Echo the `uname` output parameter from the `runcmd` step
-        run: |
-          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+    # - uses: docker://multiarch/ubuntu-core:arm64-bionic
+    #   with:
+    #     args: 'bash -c "apt-get update && apt-get install -y coreutils curl git && cd ./src .....'
