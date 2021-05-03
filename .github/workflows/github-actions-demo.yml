@@ -30,9 +30,24 @@ jobs:
     steps:
     - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
+
+    - uses: docker://multiarch/ubuntu-core:arm64-bionic
+      with:
+        args: 'uname -a'
+
+    - uses: docker://multiarch/ubuntu-core:arm64-bionic
+      with:
+        args: >
+          bash -c
+          "apt-get update &&
+          apt-get install -y python3.6 &&
+          python3.6 --version &&
+          python3.6 -c\"import platform; print(platform.machine())\""
+
     - uses: docker://jcajka/coreos-assembler:432arm64
       with:
         args: 'uname -a'
+
 
     # - uses: actions/checkout@v1
 
