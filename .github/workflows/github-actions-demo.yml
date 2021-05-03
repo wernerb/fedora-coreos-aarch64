@@ -45,8 +45,8 @@ jobs:
           python3.6 -c\"import platform; print(platform.machine())\""
 
     - uses: docker://jcajka/coreos-assembler:432arm64
-      with:
-        args: 'cosa shell'
+      # with:
+      #   args: 'cosa shell'
 
 
     # - uses: actions/checkout@v1
